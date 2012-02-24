@@ -256,6 +256,10 @@ _libusb_transfer._fields_ = [('dev_handle', _libusb_device_handle),
                              ('iso_packet_desc', _libusb_iso_packet_descriptor)
 ]
 
+def _get_iso_packet_list(transfer):
+    list_type = _libusb_iso_packet_descriptor * transfer.num_iso_packets
+    return list_type.from_address(addressof(transfer.iso_packet_desc))
+
 _lib = None
 _init = None
 
@@ -486,10 +490,6 @@ def _setup_prototypes(lib):
                         c_int
                     ]
         """
-        def _get_iso_packet_list(transfer):
-            list_type = _libusb_iso_packet_descriptor * transfer.num_iso_packets
-            return list_type.from_address(addressof(transfer.iso_packet_desc))
-
         transfer = transfer_p.contents
         for iso_packet_desc in _get_iso_packet_list(transfer):
             iso_packet_desc.length = length
@@ -758,14 +758,53 @@ class _LibUSB(usb.backend.IBackend):
         while not callback_done.value:
             _check(_lib.libusb_handle_events(None))
 
+        length = sum([t.actual_length for t in _get_iso_packet_list(transfer)])
+
         _lib.libusb_free_transfer(transfer)
 
         return length
 
-# TODO: implement isochronous read.
-#    @methodtrace(_logger)
-#    def iso_read(self, dev_handle, ep, intf, size, timeout):
-#        pass
+    @methodtrace(_logger)
+    def iso_read(self, dev_handle, ep, intf, size, timeout):
+        def callback(libusb_transfer):
+            if libusb_transfer.contents.status == LIBUSB_TRANSFER_COMPLETED:
+                callback_done = cast(libusb_transfer.contents.user_data,
+                                     POINTER(c_int))
+                callback_done.contents.value = 1
+            else:
+                status = int(libusb_transfer.contents.status)
+                raise usb.USBError(_str_transfer_error[status],
+                                   status,
+                                   _transfer_errno[status])
+
+        data = _interop.as_array((0,) * size)
+        address, length = data.buffer_info()
+        length *= data.itemsize
+
+        packet_length = _lib.libusb_get_max_iso_packet_size(dev_handle.devid, ep)
+        packet_count = int(math.ceil(float(length) / packet_length))
+
+        transfer = _lib.libusb_alloc_transfer(packet_count)
+        callback_done = c_int(0)
+        _lib.libusb_fill_iso_transfer(transfer,
+                                      dev_handle.handle,
+                                      ep,
+                                      cast(address, POINTER(c_ubyte)),
+                                      length,
+                                      packet_count,
+                                      _libusb_transfer_cb_fn_p(callback),
+                                      byref(callback_done),
+                                      timeout)
+        _lib.libusb_set_iso_packet_lengths(transfer, packet_length)
+        _check(_lib.libusb_submit_transfer(transfer))
+        while not callback_done.value:
+            _check(_lib.libusb_handle_events(None))
+
+        length = sum([t.actual_length for t in _get_iso_packet_list(transfer)])
+
+        _lib.libusb_free_transfer(transfer)
+
+        return data[:length]
 
     @methodtrace(_logger)
     def ctrl_transfer(self,
