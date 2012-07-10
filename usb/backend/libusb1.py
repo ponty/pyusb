@@ -758,7 +758,8 @@ class _LibUSB(usb.backend.IBackend):
         while not callback_done.value:
             _check(_lib.libusb_handle_events(None))
 
-        length = sum([t.actual_length for t in _get_iso_packet_list(transfer)])
+        length = sum([t.actual_length for t in
+                    _get_iso_packet_list(transfer.contents)])
 
         _lib.libusb_free_transfer(transfer)
 
@@ -800,7 +801,8 @@ class _LibUSB(usb.backend.IBackend):
         while not callback_done.value:
             _check(_lib.libusb_handle_events(None))
 
-        length = sum([t.actual_length for t in _get_iso_packet_list(transfer)])
+        length = sum([t.actual_length for t in
+                    _get_iso_packet_list(transfer.contents)])
 
         _lib.libusb_free_transfer(transfer)
 
