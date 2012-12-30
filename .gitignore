@@ -3,3 +3,6 @@ build
 ChangeLog
 MANIFEST
 dist
+
+.*
+!.gitignore
