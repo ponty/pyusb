@@ -31,7 +31,7 @@ __author__ = 'Wander Lairson Costa'
 __all__ = ['methodtrace', 'functiontrace']
 
 import logging
-import usb._interop as _interop
+import usb1._interop as _interop
 
 _enable_tracing = False
 

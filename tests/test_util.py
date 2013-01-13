@@ -28,9 +28,9 @@
 
 import utils
 import unittest
-from usb.util import *
+from usb1.util import *
 from devinfo import *
-import usb.backend
+import usb1.backend
 
 class _ConfigurationDescriptor(object):
     def __init__(self, bConfigurationValue):
@@ -63,7 +63,7 @@ class _DeviceDescriptor(object):
 
 class FindDescriptorTest(unittest.TestCase):
     def runTest(self):
-        d = usb.core.find(idVendor=ID_VENDOR)
+        d = usb1.core.find(idVendor=ID_VENDOR)
         if d is None:
             return
 

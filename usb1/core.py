@@ -41,10 +41,10 @@ __author__ = 'Wander Lairson Costa'
 
 __all__ = ['Device', 'Configuration', 'Interface', 'Endpoint', 'find']
 
-import usb.util as util
+import usb1.util as util
 import copy
 import operator
-import usb._interop as _interop
+import usb1._interop as _interop
 import logging
 
 _logger = logging.getLogger('usb.core')
@@ -221,8 +221,8 @@ class Endpoint(object):
     properties.  For example, to access the field bEndpointAddress
     of the endpoint descriptor:
 
-    >>> import usb.core
-    >>> dev = usb.core.find()
+    >>> import usb1.core
+    >>> dev = usb1.core.find()
     >>> for cfg in dev:
     >>>     for i in cfg:
     >>>         for e in i:
@@ -394,8 +394,8 @@ class Configuration(object):
     properties.  For example, to access the field bConfigurationValue
     of the configuration descriptor:
 
-    >>> import usb.core
-    >>> dev = usb.core.find()
+    >>> import usb1.core
+    >>> dev = usb1.core.find()
     >>> for cfg in dev:
     >>>     print cfg.bConfigurationValue
     """
@@ -480,8 +480,8 @@ class Device(object):
 
     When working in a new hardware, one first try would be like this:
 
-    >>> import usb.core
-    >>> dev = usb.core.find(idVendor=myVendorId, idProduct=myProductId)
+    >>> import usb1.core
+    >>> dev = usb1.core.find(idVendor=myVendorId, idProduct=myProductId)
     >>> dev.set_configuration()
     >>> dev.write(1, 'test')
 
@@ -798,7 +798,7 @@ def find(find_all=False, backend = None, custom_match = None, **args):
     so:
 
     def is_printer(dev):
-        import usb.util
+        import usb1.util
         if dev.bDeviceClass == 7:
             return True
         for cfg in dev:
@@ -848,9 +848,9 @@ def find(find_all=False, backend = None, custom_match = None, **args):
                 yield d
 
     if backend is None:
-        import usb.backend.libusb1 as libusb1
-        import usb.backend.libusb0 as libusb0
-        import usb.backend.openusb as openusb
+        import usb1.backend.libusb1 as libusb1
+        import usb1.backend.libusb0 as libusb0
+        import usb1.backend.openusb as openusb
 
         for m in (libusb1, openusb, libusb0):
             backend = m.get_backend()

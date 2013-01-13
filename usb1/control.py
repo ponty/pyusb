@@ -59,8 +59,8 @@ __all__ = ['get_status',
            'U2_ENABLE',
            'LTM_ENABLE']
 
-import usb.util as util
-import usb.core as core
+import usb1.util as util
+import usb1.core as core
 
 def _parse_recipient(recipient, direction):
     if recipient is None:

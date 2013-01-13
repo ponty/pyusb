@@ -38,7 +38,7 @@ setup(
     author_email='wander.lairson@gmail.com',
     license = 'BSD',
     url='http://pyusb.sourceforge.net',
-    packages=['usb', 'usb.backend'],
+    packages=['usb1', 'usb1.backend'],
     long_description =
 """
 PyUSB offers easy USB devices communication in Python.

@@ -36,7 +36,7 @@ Who's who
 ---------
 
 First of all, let's give an overview on the PyUSB modules. PyUSB modules are under
-the ``usb`` package. This package has the following modules:
+the ``usb1`` package. This package has the following modules:
 
 ======= ===========
 Content Description
@@ -50,8 +50,8 @@ backend A subpackage containing the builtin backends.
 
 For example, to import the ``core`` module, you do as so::
 
-    >>> import usb.core
-    >>> dev = usb.core.find()
+    >>> import usb1.core
+    >>> dev = usb1.core.find()
 
 Let's get it started
 --------------------
@@ -59,11 +59,11 @@ Let's get it started
 Following is a simplistic program that sends the 'test' string to the first OUT endpoint
 found::
 
-    import usb.core
-    import usb.util
+    import usb1.core
+    import usb1.util
 
     # find our device
-    dev = usb.core.find(idVendor=0xfffe, idProduct=0x0001)
+    dev = usb1.core.find(idVendor=0xfffe, idProduct=0x0001)
 
     # was it found?
     if dev is None:
@@ -76,19 +76,19 @@ found::
     # get an endpoint instance
     cfg = dev.get_active_configuration()
     interface_number = cfg[(0,0)].bInterfaceNumber
-    alternate_setting = usb.control.get_interface(dev, interface_number)
-    intf = usb.util.find_descriptor(
+    alternate_setting = usb1.control.get_interface(dev, interface_number)
+    intf = usb1.util.find_descriptor(
         cfg, bInterfaceNumber = interface_number,
         bAlternateSetting = alternate_setting
     )
 
-    ep = usb.util.find_descriptor(
+    ep = usb1.util.find_descriptor(
         intf,
         # match the first OUT endpoint
         custom_match = \
         lambda e: \
-            usb.util.endpoint_direction(e.bEndpointAddress) == \
-            usb.util.ENDPOINT_OUT
+            usb1.util.endpoint_direction(e.bEndpointAddress) == \
+            usb1.util.ENDPOINT_OUT
     )
 
     assert ep is not None
@@ -96,8 +96,8 @@ found::
     # write the data
     ep.write('test')
 
-The first two lines import PyUSB package modules. ``usb.core`` is the main module, and
-``usb.util`` contains utility functions. The next command searches our device
+The first two lines import PyUSB package modules. ``usb1.core`` is the main module, and
+``usb1.util`` contains utility functions. The next command searches our device
 and returns an instance object if it is found. If not, ``None`` is returned.
 After, we set the configuration to use. Note that no argument indicating what
 configuration we want was supplied. As you will see, many PyUSB functions
@@ -120,7 +120,7 @@ What's wrong?
 
 Every function in PyUSB raises an exception in case of an error. Besides the `Python
 standard exceptions <http://docs.python.org/library/exceptions.html>`__, PyUSB defines
-the ``usb.core.USBError`` for USB related errors.
+the ``usb1.core.USBError`` for USB related errors.
 
 You can also use the PyUSB log funcionality. It uses the `logging 
 <http://docs.python.org/library/logging.html>`__ module. To enable it, define
@@ -140,27 +140,27 @@ find and enumerate devices connected to the system. For example, let's
 say that our device has a vendor id equals to 0xfffe and product id
 equals to 0x0001. If we would like to find it, we would do so::
 
-    import usb.core
+    import usb1.core
 
-    dev = usb.core.find(idVendor=0xfffe, idProduct=0x0001)
+    dev = usb1.core.find(idVendor=0xfffe, idProduct=0x0001)
     if dev is None:
         raise ValueError('Our device is not connected')
 
-Just it, the function will return an ``usb.core.Device`` object representing
+Just it, the function will return an ``usb1.core.Device`` object representing
 our device. If the device is not found, it returns ``None``. Actually, you
 can use any field of the Device Descriptor_ you desire. For example, what
 if we would like to discover if there is an USB printer connected to the system?
 This is far easy::
 
     # actually this is not the whole history, keep reading
-    if usb.core.find(bDeviceClass=7) is None:
+    if usb1.core.find(bDeviceClass=7) is None:
         raise ValueError('No printer found')
 
 The 7 is the code for the printer class according to the USB standard.
 Hey, wait, what if I want to enumerate all printers present? No problem::
 
     # this is not the whole history yet...
-    printers = usb.core.find(find_all=True, bDeviceClass=7)
+    printers = usb1.core.find(find_all=True, bDeviceClass=7)
 
     # Python 2, Python 3, to be or not to be
     import sys
@@ -183,8 +183,8 @@ field equals to 7. If you are a
 if there is an easier way to do that. The answer is yes, it does. Firstly, let's
 give a look on the final code to find all printers connected::
 
-    import usb.core
-    import usb.util
+    import usb1.core
+    import usb1.util
     import sys
 
     class find_class(object):
@@ -198,7 +198,7 @@ give a look on the final code to find all printers connected::
             # interface that matches our class
             for cfg in device:
                 # find_descriptor: what's it?
-                intf = usb.util.find_descriptor(
+                intf = usb1.util.find_descriptor(
                                             cfg,
                                             bInterfaceClass=self._class
                                     )
@@ -207,14 +207,14 @@ give a look on the final code to find all printers connected::
 
             return False
 
-    printers = usb.core.find(find_all=1, custom_match=find_all(7))
+    printers = usb1.core.find(find_all=1, custom_match=find_all(7))
 
 The ``custom_match`` parameter accepts any callable object that receives the device
 object. It must return true for a matching device, and false for a non-matching
 device. You can also combine ``custom_match`` with device fields if you want::
 
     # find all printers that belongs to our vendor:
-    printers = usb.core.find(find_all=1, custom_match=find_class(7), idVendor=0xfffe)
+    printers = usb1.core.find(find_all=1, custom_match=find_class(7), idVendor=0xfffe)
 
 Here we are only interested in the printers of the 0xfffe vendor.
 
@@ -282,10 +282,10 @@ utility function. We have already seem it in the printer finding example.
 For example, if we have a configuration descriptor ``cfg`` and want to find all
 alternate setttings of the interface 1, we do so::
 
-    import usb.util
-    alt = usb.util.find_descriptor(cfg, find_all=True, bInterfaceNumber=1)
+    import usb1.util
+    alt = usb1.util.find_descriptor(cfg, find_all=True, bInterfaceNumber=1)
 
-Note that ``find_descriptor`` is in the ``usb.util`` module. It also
+Note that ``find_descriptor`` is in the ``usb1.util`` module. It also
 accepts the early described ``custom_match`` parameter.
 
 Dealing with multiple identical devices
@@ -443,8 +443,8 @@ is omitted, it is used the ``Device.default_timeout`` property as the operation 
 Control yourself
 ----------------
 
-Besides the transfers functions, the module ``usb.control`` offers functions which
-implement the standard USB control requests and the ``usb.util`` module has the
+Besides the transfers functions, the module ``usb1.control`` offers functions which
+implement the standard USB control requests and the ``usb1.util`` module has the
 convenience function ``get_string`` specifically to return string descriptors.
 
 Additional Topics
@@ -462,7 +462,7 @@ PyUSB to use it.
 
 The ``find`` function has one more parameter that I haven't told you. It is the ``backend``
 parameter. If you don't supply it, it will be used one of the builtin backends. A backend
-is a object derived from ``usb.backend.IBackend``, responsible to implement the operating
+is a object derived from ``usb1.backend.IBackend``, responsible to implement the operating
 system specific USB stuff. As you might guess, the builtins are libusb 0.1, libusb 1.0 and
 OpenUSB backends. 
 
@@ -479,7 +479,7 @@ all low level resource management it needs to work (interface claiming, device h
 internally and most of users don't need to worry about that. But, because of the nonderterminisc
 nature of automatic object destruction of Python, users cannot predict when the resources
 allocated will be released. Some applications need to allocate and free the resources deterministically.
-For these kind of applications, the ``usb.util`` module has a set of functions to deal with resource
+For these kind of applications, the ``usb1.util`` module has a set of functions to deal with resource
 management.
 
 If you want to claim and release interfaces manually, you may use the ``claim_interface``
@@ -500,11 +500,11 @@ Oldschool rules
 
 If you wrote an application using the old PyUSB API (0.whatever), you may be asking yourself
 if you need to update your code to use the new API. Well, you should, but you don't need to. PyUSB
-1.0 comes with the ``usb.legacy`` compatibility module. It implements the older API above the
-new API. "So, do I have just to replace my ``import usb`` statement with ``import usb.legacy as
+1.0 comes with the ``usb1.legacy`` compatibility module. It implements the older API above the
+new API. "So, do I have just to replace my ``import usb1`` statement with ``import usb1.legacy as
 usb`` to get my application working?", you ask. The answer is yes, it will, but you don't have
-to. If you run your application untouched it will just work, because the ``import usb`` statement
-will import all public symbols from ``usb.legacy``. If you face a problem, probably you found a bug.
+to. If you run your application untouched it will just work, because the ``import usb1`` statement
+will import all public symbols from ``usb1.legacy``. If you face a problem, probably you found a bug.
 
 Help me, please
 ---------------

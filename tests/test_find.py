@@ -27,16 +27,16 @@
 # MODIFICATIONS.
 
 import utils
-import usb.backend
-from usb.core import find
-import usb.util
+import usb1.backend
+from usb1.core import find
+import usb1.util
 import unittest
 import devinfo
 
 class _DeviceDescriptor(object):
     def __init__(self, idVendor, idProduct):
         self.bLength = 18
-        self.bDescriptorType = usb.util.DESC_TYPE_DEVICE
+        self.bDescriptorType = usb1.util.DESC_TYPE_DEVICE
         self.bcdUSB = 0x0200
         self.idVendor = idVendor
         self.idProduct = idProduct
@@ -55,7 +55,7 @@ class _DeviceDescriptor(object):
 
 # We are only interested in test usb.find() function, we don't need
 # to implement all IBackend stuff
-class _MyBackend(usb.backend.IBackend):
+class _MyBackend(usb1.backend.IBackend):
     def __init__(self):
         self.devices = [_DeviceDescriptor(devinfo.ID_VENDOR, p) for p in range(4)]
     def enumerate_devices(self):

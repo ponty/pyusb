@@ -37,12 +37,12 @@ parent_dir = os.path.split(os.getcwd())[0]
 if os.path.exists(os.path.join(parent_dir, 'usb')):
     sys.path.insert(0, parent_dir)
 
-import usb.core
+import usb1.core
 import logging
 import devinfo
 import time
 import unittest
-import usb._interop as _interop
+import usb1._interop as _interop
 
 logger = logging.getLogger('usb.test')
 

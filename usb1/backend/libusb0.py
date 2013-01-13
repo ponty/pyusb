@@ -29,12 +29,12 @@
 from ctypes import *
 import ctypes.util
 import os
-import usb.backend
-import usb.util
+import usb1.backend
+import usb1.util
 import sys
-from usb.core import USBError
-from usb._debug import methodtrace
-import usb._interop as _interop
+from usb1.core import USBError
+from usb1._debug import methodtrace
+import usb1._interop as _interop
 import logging
 
 __author__ = 'Wander Lairson Costa'
@@ -388,7 +388,7 @@ def _check(retval):
     raise USBError(errmsg, ret)
 
 # implementation of libusb 0.1.x backend
-class _LibUSB(usb.backend.IBackend):
+class _LibUSB(usb1.backend.IBackend):
     @methodtrace(_logger)
     def enumerate_devices(self):
         _check(_lib.usb_find_busses())

@@ -28,11 +28,11 @@
 
 from ctypes import *
 import ctypes.util
-import usb.util
+import usb1.util
 import sys
 import logging
-from usb._debug import methodtrace
-import usb._interop as _interop
+from usb1._debug import methodtrace
+import usb1._interop as _interop
 import errno
 
 __author__ = 'Wander Lairson Costa'
@@ -402,7 +402,7 @@ def _check(retval):
         retval = c_int(retval)
     if isinstance(retval, c_int):
         if retval.value < 0:
-           from usb.core import USBError
+           from usb1.core import USBError
            ret = retval.value
            raise USBError(_str_error[ret], ret, _libusb_errno[ret])
     return retval
@@ -455,7 +455,7 @@ class _DevIterator(object):
         _lib.libusb_free_device_list(self.dev_list, 1)
 
 # implementation of libusb 1.0 backend
-class _LibUSB(usb.backend.IBackend):
+class _LibUSB(usb1.backend.IBackend):
     @methodtrace(_logger)
     def enumerate_devices(self):
         return _DevIterator()

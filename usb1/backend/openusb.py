@@ -28,8 +28,8 @@
 
 from ctypes import *
 import ctypes.util
-import usb.util
-from usb._debug import methodtrace
+import usb1.util
+from usb1._debug import methodtrace
 import logging
 import errno
 
@@ -479,7 +479,7 @@ def _setup_prototypes(lib):
 def _check(retval):
     ret = retval.value
     if ret != 0:
-        from usb.core import USBError
+        from usb1.core import USBError
         raise USBError(_lib.openusb_strerror(ret), ret, _openusb_errno[ret])
     return retval
 
@@ -519,7 +519,7 @@ class _DevIterator(object):
     def __del__(self):
         _lib.openusb_free_devid_list(self.devlist)
 
-class _OpenUSB(usb.backend.IBackend):
+class _OpenUSB(usb1.backend.IBackend):
     @methodtrace(_logger)
     def enumerate_devices(self):
         for bus in _BusIterator():

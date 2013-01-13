@@ -26,10 +26,10 @@
 # NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 # MODIFICATIONS.
 
-import usb.core as core
-import usb.util as util
-import usb._interop as _interop
-import usb.control as control
+import usb1.core as core
+import usb1.util as util
+import usb1._interop as _interop
+import usb1.control as control
 
 __author__ = 'Wander Lairson Costa'
 

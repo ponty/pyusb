@@ -45,7 +45,7 @@ get_string - retrieve a string descriptor from the device.
 __author__ = 'Wander Lairson Costa'
 
 import operator
-import usb._interop as _interop
+import usb1._interop as _interop
 
 # descriptor type
 DESC_TYPE_DEVICE = 0x01
@@ -232,7 +232,7 @@ def get_string(dev, length, index, langid = None):
 
     The return value is the unicode string present in the descriptor.
     """
-    from usb.control import get_descriptor
+    from usb1.control import get_descriptor
     if langid is None:
 	# Asking for the zero'th index is special - it returns a string
 	# descriptor that contains all the language IDs supported by the device.

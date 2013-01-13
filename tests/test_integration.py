@@ -30,12 +30,12 @@
 
 import utils
 import unittest
-import usb.core
+import usb1.core
 import devinfo
-import usb.util
-import usb.backend.libusb0 as libusb0
-import usb.backend.libusb1 as libusb1
-import usb.backend.openusb as openusb
+import usb1.util
+import usb1.backend.libusb0 as libusb0
+import usb1.backend.libusb1 as libusb1
+import usb1.backend.openusb as openusb
 
 data_list = (utils.get_array_data1(),
              utils.get_array_data2(),

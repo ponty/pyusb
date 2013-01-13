@@ -29,12 +29,12 @@
 import utils
 import unittest
 import struct
-import usb.util
-import usb.core
-import usb.control
-import usb.backend.libusb0 as libusb0
-import usb.backend.libusb1 as libusb1
-import usb.backend.openusb as openusb
+import usb1.util
+import usb1.core
+import usb1.control
+import usb1.backend.libusb0 as libusb0
+import usb1.backend.libusb1 as libusb1
+import usb1.backend.openusb as openusb
 
 class ControlTest(unittest.TestCase):
     def __init__(self, dev):

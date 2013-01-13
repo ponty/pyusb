@@ -47,7 +47,7 @@ __all__ = ['legacy', 'core', 'backend', 'util']
 
 
 def _setup_log():
-    from usb import _debug
+    from usb1 import _debug
     logger = logging.getLogger('usb')
     debug_level = os.getenv('PYUSB_DEBUG_LEVEL')
 
@@ -89,4 +89,4 @@ _setup_log()
 
 # We import all 'legacy' module symbols to provide compatility
 # with applications that use 0.x versions.
-from usb.legacy import *
+from usb1.legacy import *

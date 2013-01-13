@@ -41,7 +41,7 @@ export the get_backend() function, which returns an instance of a backend
 object. You can provide your own customized backend if you
 want to. Bellow you find a skeleton of a backend implementation module:
 
-import usb.backend
+import usb1.backend
 
 class MyBackend(usb.backend.IBackend):
     pass
@@ -53,7 +53,7 @@ You can use your customized backend by passing it as the backend parameter of th
 usb.core.find() function. For example:
 
 import custom_backend
-import usb.core
+import usb1.core
 
 myidVendor = 0xfffe
 myidProduct = 0x0001
