@@ -3,6 +3,7 @@ build
 ChangeLog
 MANIFEST
 dist
+.tox
 
 .*
 !.gitignore
