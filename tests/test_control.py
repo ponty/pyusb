@@ -50,21 +50,21 @@ class ControlTest(unittest.TestCase):
             self.test_getset_interface()
             self.test_get_string()
         finally:
-            usb.util.dispose_resources(self.dev)
+            usb1.util.dispose_resources(self.dev)
 
     def test_get_status(self):
-        self.assertEqual(usb.control.get_status(self.dev), 1)
-        self.assertEqual(usb.control.get_status(self.dev, self.dev[0][0,0]), 0)
-        self.assertEqual(usb.control.get_status(self.dev, self.dev[0][0,0][0]), 0)
-        self.assertRaises(ValueError, usb.control.get_status, (self.dev, 0), 0)
+        self.assertEqual(usb1.control.get_status(self.dev), 1)
+        self.assertEqual(usb1.control.get_status(self.dev, self.dev[0][0,0]), 0)
+        self.assertEqual(usb1.control.get_status(self.dev, self.dev[0][0,0][0]), 0)
+        self.assertRaises(ValueError, usb1.control.get_status, (self.dev, 0), 0)
 
     def test_clearset_feature(self):
         e = self.dev[0][0,0][0]
-        self.assertEqual(usb.control.get_status(self.dev, e), 0)
-        usb.control.set_feature(self.dev, usb.control.ENDPOINT_HALT, e)
-        self.assertEqual(usb.control.get_status(self.dev, e), 1)
-        usb.control.clear_feature(self.dev, usb.control.ENDPOINT_HALT, e)
-        self.assertEqual(usb.control.get_status(self.dev, e), 0)
+        self.assertEqual(usb1.control.get_status(self.dev, e), 0)
+        usb1.control.set_feature(self.dev, usb1.control.ENDPOINT_HALT, e)
+        self.assertEqual(usb1.control.get_status(self.dev, e), 1)
+        usb1.control.clear_feature(self.dev, usb1.control.ENDPOINT_HALT, e)
+        self.assertEqual(usb1.control.get_status(self.dev, e), 0)
 
     def test_getset_descriptor(self):
         # TODO: test set_descriptor
@@ -83,7 +83,7 @@ class ControlTest(unittest.TestCase):
                      self.dev.iProduct,
                      self.dev.iSerialNumber,
                      self.dev.bNumConfigurations)
-        ret = usb.control.get_descriptor(
+        ret = usb1.control.get_descriptor(
                     self.dev,
                     struct.calcsize(dev_fmt),
                     self.dev.bDescriptorType,
@@ -92,21 +92,21 @@ class ControlTest(unittest.TestCase):
         self.assertEqual(struct.unpack(dev_fmt, ret.tostring()), dev_descr)
 
     def test_getset_configuration(self):
-        usb.control.set_configuration(self.dev, 1)
-        self.assertEqual(usb.control.get_configuration(self.dev), 1)
-        usb.control.set_configuration(self.dev, 0)
-        self.assertEqual(usb.control.get_configuration(self.dev), 0)
-        usb.control.set_configuration(self.dev, 1)
-        self.assertEqual(usb.control.get_configuration(self.dev), 1)
+        usb1.control.set_configuration(self.dev, 1)
+        self.assertEqual(usb1.control.get_configuration(self.dev), 1)
+        usb1.control.set_configuration(self.dev, 0)
+        self.assertEqual(usb1.control.get_configuration(self.dev), 0)
+        usb1.control.set_configuration(self.dev, 1)
+        self.assertEqual(usb1.control.get_configuration(self.dev), 1)
 
     def test_getset_interface(self):
         i = self.dev[0][0,0]
-        usb.control.set_interface(
+        usb1.control.set_interface(
             self.dev,
             i.bInterfaceNumber,
             i.bAlternateSetting
         )
-        self.assertEqual(usb.control.get_interface(
+        self.assertEqual(usb1.control.get_interface(
                             self.dev,
                             i.bInterfaceNumber),
                             i.bAlternateSetting
@@ -117,8 +117,8 @@ class ControlTest(unittest.TestCase):
     def test_get_string(self):
         manufacturer_str = 'Travis Robinson'.encode('utf-16-le').decode('utf-16-le')
         product_str = 'Benchmark Device'.encode('utf-16-le').decode('utf-16-le')
-        self.assertEqual(usb.util.get_string(self.dev, len(manufacturer_str), self.dev.iManufacturer), manufacturer_str)
-        self.assertEqual(usb.util.get_string(self.dev, len(product_str), self.dev.iProduct), product_str)
+        self.assertEqual(usb1.util.get_string(self.dev, len(manufacturer_str), self.dev.iManufacturer), manufacturer_str)
+        self.assertEqual(usb1.util.get_string(self.dev, len(product_str), self.dev.iProduct), product_str)
 
 def get_suite():
     suite = unittest.TestSuite()

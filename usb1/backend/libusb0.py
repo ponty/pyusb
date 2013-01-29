@@ -446,10 +446,10 @@ class _LibUSB(usb1.backend.IBackend):
 
     @methodtrace(_logger)
     def get_configuration(self, dev_handle):
-        bmRequestType = usb.util.build_request_type(
-                                usb.util.CTRL_IN,
-                                usb.util.CTRL_TYPE_STANDARD,
-                                usb.util.CTRL_RECIPIENT_DEVICE
+        bmRequestType = usb1.util.build_request_type(
+                                usb1.util.CTRL_IN,
+                                usb1.util.CTRL_TYPE_STANDARD,
+                                usb1.util.CTRL_RECIPIENT_DEVICE
                             )
         return self.ctrl_transfer(dev_handle,
                                   bmRequestType,
@@ -513,7 +513,7 @@ class _LibUSB(usb1.backend.IBackend):
                       wIndex,
                       data_or_wLength,
                       timeout):
-        if usb.util.ctrl_direction(bmRequestType) == usb.util.CTRL_OUT:
+        if usb1.util.ctrl_direction(bmRequestType) == usb1.util.CTRL_OUT:
             address, length = data_or_wLength.buffer_info()
             length *= data_or_wLength.itemsize
             return _check(_lib.usb_control_msg(

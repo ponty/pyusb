@@ -26,7 +26,7 @@
 # NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 # MODIFICATIONS.
 
-r"""usb.control - USB standard control requests
+r"""usb1.control - USB standard control requests
 
 This module exports:
 

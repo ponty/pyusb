@@ -26,7 +26,7 @@
 # NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 # MODIFICATIONS.
 
-r"""usb.util - Utility functions.
+r"""usb1.util - Utility functions.
 
 This module exports:
 

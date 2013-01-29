@@ -26,7 +26,7 @@
 # NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 # MODIFICATIONS.
 
-r"""usb.backend - Backend interface.
+r"""usb1.backend - Backend interface.
 
 This module exports:
 
@@ -43,14 +43,14 @@ want to. Bellow you find a skeleton of a backend implementation module:
 
 import usb1.backend
 
-class MyBackend(usb.backend.IBackend):
+class MyBackend(usb1.backend.IBackend):
     pass
 
 def get_backend():
     return MyBackend()
 
 You can use your customized backend by passing it as the backend parameter of the
-usb.core.find() function. For example:
+usb1.core.find() function. For example:
 
 import custom_backend
 import usb1.core
@@ -60,7 +60,7 @@ myidProduct = 0x0001
 
 mybackend = custom_backend.get_backend()
 
-dev = usb.core.find(backend = mybackend, idProduct=myidProduct,
+dev = usb1.core.find(backend = mybackend, idProduct=myidProduct,
                     idVendor=myidVendor)
 
 For custom backends, you are not required to supply the get_backend() function,

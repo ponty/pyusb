@@ -59,11 +59,11 @@ class DeviceTest(unittest.TestCase):
             self.test_ctrl_transfer()
             #self.test_reset()
         finally:
-            usb.util.dispose_resources(self.dev)
+            usb1.util.dispose_resources(self.dev)
 
     def test_attributes(self):
         self.assertEqual(self.dev.bLength, 18)
-        self.assertEqual(self.dev.bDescriptorType, usb.util.DESC_TYPE_DEVICE)
+        self.assertEqual(self.dev.bDescriptorType, usb1.util.DESC_TYPE_DEVICE)
         self.assertEqual(self.dev.bcdUSB, 0x0200)
         self.assertEqual(self.dev.idVendor, devinfo.ID_VENDOR)
         self.assertEqual(self.dev.idProduct, devinfo.ID_PRODUCT)
@@ -95,7 +95,7 @@ class DeviceTest(unittest.TestCase):
         self.dev.set_configuration()
         self.assertEqual(cfg, self.dev.get_active_configuration().bConfigurationValue)
         self.dev.set_configuration(0)
-        self.assertRaises(usb.core.USBError, self.dev.get_active_configuration)
+        self.assertRaises(usb1.core.USBError, self.dev.get_active_configuration)
         self.dev.set_configuration()
 
     def test_set_interface_altsetting(self):
@@ -162,10 +162,10 @@ class ConfigurationTest(unittest.TestCase):
             self.test_attributes()
             self.test_set()
         finally:
-            usb.util.dispose_resources(self.cfg.device)
+            usb1.util.dispose_resources(self.cfg.device)
     def test_attributes(self):
         self.assertEqual(self.cfg.bLength, 9)
-        self.assertEqual(self.cfg.bDescriptorType, usb.util.DESC_TYPE_CONFIG)
+        self.assertEqual(self.cfg.bDescriptorType, usb1.util.DESC_TYPE_CONFIG)
         self.assertEqual(self.cfg.wTotalLength, 78)
         self.assertEqual(self.cfg.bNumInterfaces, 0x01)
         self.assertEqual(self.cfg.bConfigurationValue, 0x01)
@@ -186,10 +186,10 @@ class InterfaceTest(unittest.TestCase):
             self.test_attributes()
             self.test_set_altsetting()
         finally:
-            usb.util.dispose_resources(self.intf.device)
+            usb1.util.dispose_resources(self.intf.device)
     def test_attributes(self):
         self.assertEqual(self.intf.bLength, 9)
-        self.assertEqual(self.intf.bDescriptorType, usb.util.DESC_TYPE_INTERFACE)
+        self.assertEqual(self.intf.bDescriptorType, usb1.util.DESC_TYPE_INTERFACE)
         self.assertEqual(self.intf.bInterfaceNumber, 0)
         self.assertEqual(self.intf.bAlternateSetting, 0)
         self.assertEqual(self.intf.bNumEndpoints, 2)
@@ -205,18 +205,18 @@ class EndpointTest(unittest.TestCase):
         unittest.TestCase.__init__(self)
         self.dev = dev
         intf = dev[0][(0,0)]
-        self.ep_out = usb.util.find_descriptor(intf, bEndpointAddress=0x01)
-        self.ep_in = usb.util.find_descriptor(intf, bEndpointAddress=0x81)
+        self.ep_out = usb1.util.find_descriptor(intf, bEndpointAddress=0x01)
+        self.ep_in = usb1.util.find_descriptor(intf, bEndpointAddress=0x81)
     def runTest(self):
         try:
             self.dev.set_configuration()
             self.test_attributes()
             self.test_write_read()
         finally:
-            usb.util.dispose_resources(self.dev)
+            usb1.util.dispose_resources(self.dev)
     def test_attributes(self):
         self.assertEqual(self.ep_out.bLength, 7)
-        self.assertEqual(self.ep_out.bDescriptorType, usb.util.DESC_TYPE_ENDPOINT)
+        self.assertEqual(self.ep_out.bDescriptorType, usb1.util.DESC_TYPE_ENDPOINT)
         self.assertEqual(self.ep_out.bEndpointAddress, 0x01)
         self.assertEqual(self.ep_out.bmAttributes, 0x02)
         self.assertEqual(self.ep_out.wMaxPacketSize, 16)

@@ -44,7 +44,7 @@ import time
 import unittest
 import usb1._interop as _interop
 
-logger = logging.getLogger('usb.test')
+logger = logging.getLogger('usb1.test')
 
 # data generation functions
 def get_array_data1(length = 8):
@@ -85,7 +85,7 @@ def delay_after_reset():
 # check if our test hardware is present
 def find_my_device(backend = None):
     try:
-        return usb.core.find(backend=backend,
+        return usb1.core.find(backend=backend,
                              idVendor=devinfo.ID_VENDOR,
                              idProduct=devinfo.ID_PRODUCT)
     except Exception:

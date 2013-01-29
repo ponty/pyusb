@@ -47,7 +47,7 @@ class _DeviceDescriptor(object):
     def __init__(self):
         self.configurations = (_ConfigurationDescriptor(1), _ConfigurationDescriptor(2))
         self.bLength = 18
-        self.bDescriptorType = usb.util.DESC_TYPE_DEVICE
+        self.bDescriptorType = usb1.util.DESC_TYPE_DEVICE
         self.bcdUSB = 0x0200
         self.idVendor = ID_VENDOR
         self.idProduct = ID_PRODUCT
@@ -80,9 +80,9 @@ class FindDescriptorTest(unittest.TestCase):
         self.assertNotEqual(find_descriptor(d, custom_match = lambda c: c.bConfigurationValue == 1, bLength=9), None)
 
         cfg = find_descriptor(d)
-        self.assertTrue(isinstance(cfg, usb.core.Configuration))
+        self.assertTrue(isinstance(cfg, usb1.core.Configuration))
         intf = find_descriptor(cfg)
-        self.assertTrue(isinstance(intf, usb.core.Interface))
+        self.assertTrue(isinstance(intf, usb1.core.Interface))
 
 class UtilTest(unittest.TestCase):
     def test_endpoint_address(self):

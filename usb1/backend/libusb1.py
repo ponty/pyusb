@@ -586,7 +586,7 @@ class _LibUSB(usb1.backend.IBackend):
                       wIndex,
                       data_or_wLength,
                       timeout):
-        if usb.util.ctrl_direction(bmRequestType) == usb.util.CTRL_OUT:
+        if usb1.util.ctrl_direction(bmRequestType) == usb1.util.CTRL_OUT:
             buff = data_or_wLength
         else:
             buff = _interop.as_array((0,) * data_or_wLength)
@@ -604,7 +604,7 @@ class _LibUSB(usb1.backend.IBackend):
                                                   length,
                                                   timeout))
 
-        if usb.util.ctrl_direction(bmRequestType) == usb.util.CTRL_OUT:
+        if usb1.util.ctrl_direction(bmRequestType) == usb1.util.CTRL_OUT:
             return ret.value
         else:
             return buff[:ret.value]

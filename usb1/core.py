@@ -26,7 +26,7 @@
 # NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 # MODIFICATIONS.
 
-r"""usb.core - Core USB features.
+r"""usb1.core - Core USB features.
 
 This module exports:
 
@@ -47,7 +47,7 @@ import operator
 import usb1._interop as _interop
 import logging
 
-_logger = logging.getLogger('usb.core')
+_logger = logging.getLogger('usb1.core')
 
 _DEFAULT_TIMEOUT = 1000
 
@@ -308,8 +308,8 @@ class Interface(object):
     properties.  For example, to access the field bInterfaceNumber
     of the interface descriptor:
 
-    >>> import usb.core
-    >>> dev = usb.core.find()
+    >>> import usb1.core
+    >>> dev = usb1.core.find()
     >>> for cfg in dev:
     >>>     for i in cfg:
     >>>         print i.bInterfaceNumber
@@ -467,8 +467,8 @@ class Device(object):
     For example, to access the field bDescriptorType of the device
     descriptor:
 
-    >>> import usb.core
-    >>> dev = usb.core.find()
+    >>> import usb1.core
+    >>> dev = usb1.core.find()
     >>> dev.bDescriptorType
 
     Additionally, the class provides methods to communicate with
@@ -584,7 +584,7 @@ class Device(object):
 
         >>> try:
         >>>     dev.set_interface_altsetting()
-        >>> except usb.core.USBError:
+        >>> except usb1.core.USBError:
         >>>     pass
         """
         self._ctx.managed_set_interface(self, interface, alternate_setting)
@@ -802,7 +802,7 @@ def find(find_all=False, backend = None, custom_match = None, **args):
         if dev.bDeviceClass == 7:
             return True
         for cfg in dev:
-            if usb.util.find_descriptor(cfg, bInterfaceClass=7) is not None:
+            if usb1.util.find_descriptor(cfg, bInterfaceClass=7) is not None:
                 return True
 
     printers = find(find_all=True, custom_match = is_printer)
@@ -830,7 +830,7 @@ def find(find_all=False, backend = None, custom_match = None, **args):
     If you do not supply a backend explicitly, find() function will select
     one of the predefineds backends according to system availability.
 
-    Backends are explained in the usb.backend module.
+    Backends are explained in the usb1.backend module.
     """
 
     def device_iter(k, v):

@@ -76,7 +76,7 @@ class BackendTest(unittest.TestCase):
     def test_get_device_descriptor(self):
         dsc = self.backend.get_device_descriptor(self.dev)
         self.assertEqual(dsc.bLength, 18)
-        self.assertEqual(dsc.bDescriptorType, usb.util.DESC_TYPE_DEVICE)
+        self.assertEqual(dsc.bDescriptorType, usb1.util.DESC_TYPE_DEVICE)
         self.assertEqual(dsc.bcdUSB, 0x0200)
         self.assertEqual(dsc.idVendor, devinfo.ID_VENDOR)
         self.assertEqual(dsc.idProduct, devinfo.ID_PRODUCT)
@@ -93,7 +93,7 @@ class BackendTest(unittest.TestCase):
     def test_get_configuration_descriptor(self):
         cfg = self.backend.get_configuration_descriptor(self.dev, 0)
         self.assertEqual(cfg.bLength, 9)
-        self.assertEqual(cfg.bDescriptorType, usb.util.DESC_TYPE_CONFIG)
+        self.assertEqual(cfg.bDescriptorType, usb1.util.DESC_TYPE_CONFIG)
         self.assertEqual(cfg.wTotalLength, 78)
         self.assertEqual(cfg.bNumInterfaces, 0x01)
         self.assertEqual(cfg.bConfigurationValue, 0x01)
@@ -104,7 +104,7 @@ class BackendTest(unittest.TestCase):
     def test_get_interface_descriptor(self):
         intf = self.backend.get_interface_descriptor(self.dev, 0, 0, 0)
         self.assertEqual(intf.bLength, 9)
-        self.assertEqual(intf.bDescriptorType, usb.util.DESC_TYPE_INTERFACE)
+        self.assertEqual(intf.bDescriptorType, usb1.util.DESC_TYPE_INTERFACE)
         self.assertEqual(intf.bInterfaceNumber, 0)
         self.assertEqual(intf.bAlternateSetting, 0)
         self.assertEqual(intf.bNumEndpoints, 2)
@@ -116,7 +116,7 @@ class BackendTest(unittest.TestCase):
     def test_get_endpoint_descriptor(self):
         ep = self.backend.get_endpoint_descriptor(self.dev, 0, 0, 0, 0)
         self.assertEqual(ep.bLength, 7)
-        self.assertEqual(ep.bDescriptorType, usb.util.DESC_TYPE_ENDPOINT)
+        self.assertEqual(ep.bDescriptorType, usb1.util.DESC_TYPE_ENDPOINT)
         self.assertEqual(ep.bEndpointAddress, 0x01)
         self.assertEqual(ep.bmAttributes, 0x02)
         self.assertEqual(ep.wMaxPacketSize, 16)

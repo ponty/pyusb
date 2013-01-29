@@ -50,12 +50,12 @@ PICFW_GET_VENDOR_BUFFER = 0x11
 
 def set_test_type(t, dev = None):
     if dev is None:
-        dev = usb.core.find(idVendor = ID_VENDOR, idProduct = ID_PRODUCT)
+        dev = usb1.core.find(idVendor = ID_VENDOR, idProduct = ID_PRODUCT)
 
-    bmRequestType = usb.util.build_request_type(
-                        usb.util.CTRL_OUT,
-                        usb.util.CTRL_TYPE_VENDOR,
-                        usb.util.CTRL_RECIPIENT_INTERFACE
+    bmRequestType = usb1.util.build_request_type(
+                        usb1.util.CTRL_OUT,
+                        usb1.util.CTRL_TYPE_VENDOR,
+                        usb1.util.CTRL_RECIPIENT_INTERFACE
                     )
 
     dev.ctrl_transfer(

@@ -53,7 +53,7 @@ class _DeviceDescriptor(object):
         self.address = 1
         self.port_number= None
 
-# We are only interested in test usb.find() function, we don't need
+# We are only interested in test usb1.find() function, we don't need
 # to implement all IBackend stuff
 class _MyBackend(usb1.backend.IBackend):
     def __init__(self):

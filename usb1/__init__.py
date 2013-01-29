@@ -34,7 +34,7 @@ This package exports the following modules and subpackages:
     legacy - the compatibility layer with 0.x version
     backend - the support for backend implementations.
 
-Since version 1.0, main PyUSB implementation lives in the 'usb.core'
+Since version 1.0, main PyUSB implementation lives in the 'usb1.core'
 module. New applications are encouraged to use it.
 """
 
